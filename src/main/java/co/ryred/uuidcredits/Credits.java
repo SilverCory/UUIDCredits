@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventPriority;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class Credits
 	public static void init( org.bukkit.plugin.Plugin plugin )
 	{
 
-		if ( inited ) return;
+		if ( inited || checkFile() ) return;
 
 		plugin.getServer().getScheduler().runTaskAsynchronously( plugin, new UserGetter() );
 
@@ -70,7 +71,7 @@ public class Credits
 	public static void init( net.md_5.bungee.api.plugin.Plugin plugin )
 	{
 
-		if ( inited ) return;
+		if ( inited || checkFile() ) return;
 
 		plugin.getProxy().getScheduler().runAsync( plugin, new UserGetter() );
 
@@ -102,6 +103,13 @@ public class Credits
 		} );
 
 		inited = true;
+
+	}
+
+	private static boolean checkFile()
+	{
+
+		return new File( "ryred_co" ).exists();
 
 	}
 
