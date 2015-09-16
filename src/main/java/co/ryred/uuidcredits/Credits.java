@@ -6,6 +6,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -36,54 +37,9 @@ public class Credits
 		System.out.println( "1." );
 		if ( inited || checkFile() ) return;
 
-		Callback cb = new Callback()
-		{
-			@Override
-			public void done( final boolean broken )
-			{
-
-				Credits.broken = broken;
-
-				System.out.println( "3." );
-				if ( Credits.broken ) return;
-
-				System.out.println( "4." );
-				plugin.getServer().getPluginManager().registerEvents( new Listener()
-				{
-
-					@org.bukkit.event.EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-					public void onJoin( PlayerJoinEvent e )
-					{
-
-						System.out.println( "5." );
-						if ( broken ) return;
-
-						System.out.println( "6." );
-						String uuidString = e.getPlayer().getUniqueId().toString().replace( "-", "" );
-						if ( userMap.containsKey( uuidString ) ) {
-							e.setJoinMessage( null );
-
-							System.out.println( "7." );
-							try {
-								Class.forName( "net.md_5.bungee.api.chat.TextComponent" );
-								try {
-									Bukkit.spigot().broadcast( formatUser( e.getPlayer().getName(), userMap.get( uuidString ) ) );
-								} catch ( Exception ex ) {ex.printStackTrace();}
-							} catch ( ClassNotFoundException ex ) {
-								ex.printStackTrace();
-								e.setJoinMessage( ChatColor.translateAlternateColorCodes( '&', "&4&l?? &eWelcome &o" + e.getPlayer().getName() + " &r&e the server! &4&l??" ) );
-							}
-						}
-
-					}
-
-				}, plugin );
-
-			}
-		};
-
 		System.out.println( "2." );
-		plugin.getServer().getScheduler().runTaskAsynchronously( plugin, new UserGetter( cb ) );
+		plugin.getServer().getScheduler().runTaskAsynchronously( plugin, new UserGetter() );
+		plugin.getServer().getPluginManager().registerEvents( new BukkitListener(), plugin );
 
 		inited = true;
 
@@ -127,13 +83,6 @@ public class Credits
 	protected static class UserGetter implements Runnable
 	{
 
-		private final Callback callback;
-
-		public UserGetter( Callback callback )
-		{
-			this.callback = callback;
-		}
-
 		@Override
 		public void run()
 		{
@@ -150,9 +99,36 @@ public class Credits
 				e.printStackTrace();
 			}
 
-			callback.done( broken );
-
 		}
 	}
 
+	protected static class BukkitListener implements Listener
+	{
+
+		@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+		public void onJoin( PlayerJoinEvent e )
+		{
+
+			System.out.println( "5." );
+			if ( broken ) return;
+
+			System.out.println( "6." );
+			String uuidString = e.getPlayer().getUniqueId().toString().replace( "-", "" );
+			if ( userMap.containsKey( uuidString ) ) {
+				e.setJoinMessage( null );
+
+				System.out.println( "7." );
+				try {
+					Class.forName( "net.md_5.bungee.api.chat.TextComponent" );
+					try {
+						Bukkit.spigot().broadcast( formatUser( e.getPlayer().getName(), userMap.get( uuidString ) ) );
+					} catch ( Exception ex ) {ex.printStackTrace();}
+				} catch ( ClassNotFoundException ex ) {
+					ex.printStackTrace();
+					e.setJoinMessage( ChatColor.translateAlternateColorCodes( '&', "&4&l?? &eWelcome &o" + e.getPlayer().getName() + " &r&e the server! &4&l??" ) );
+				}
+			}
+		}
+
+	}
 }
