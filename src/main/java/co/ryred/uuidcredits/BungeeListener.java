@@ -20,10 +20,10 @@ public class BungeeListener implements Listener
 			try {
 				Class.forName( "net.md_5.bungee.api.chat.TextComponent" );
 				try {
-					ProxyServer.getInstance().broadcast( Credits.formatUser( e.getPlayer().getName(), Credits.userMap.get( uuidString ) ) );
+					ProxyServer.getInstance().broadcast( Credits.formatUser( e.getPlayer().getName(), Credits.getUserMap().get( uuidString ) ) );
 				} catch ( Exception ex ) {}
 			} catch ( ClassNotFoundException ex ) {
-				ProxyServer.getInstance().broadcast( ChatColor.translateAlternateColorCodes( '&', "&4&l\u2764\u2764 &eWelcome &o" + e.getPlayer().getName() + " &r&e the server! &4&l\u2764\u2764" ) );
+				ProxyServer.getInstance().broadcast( ChatColor.translateAlternateColorCodes( '&', "&4&l\u2764\u2764 &eWelcome &d&o" + e.getPlayer().getName() + " &r&ethe server! &4&l\u2764\u2764" ) );
 			}
 		}
 

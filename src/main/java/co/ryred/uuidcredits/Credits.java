@@ -71,7 +71,7 @@ public abstract class Credits
 			
 		textComponents.add( new TextComponent( c( "  &cThis user has assisted in the upcoming of one or more\n&c  of the plugins this server uses! Please respect them." ) ) );
 
-		TextComponent tc = new TextComponent( c( "&4&l\u2764\u2764 &eWelcome &o" + name + " &r&e the server! &4&l\u2764\u2764" ) );
+		TextComponent tc = new TextComponent( c( "&4&l\u2764\u2764 &eWelcome &d&o" + name + " &r&ethe server! &4&l\u2764\u2764" ) );
 		tc.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, textComponents.toArray( new TextComponent[ textComponents.size() ] ) ) );
 
 		if ( user.getProfile() != null ) {
