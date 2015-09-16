@@ -47,9 +47,7 @@ public class Credits
 
 	protected static boolean checkFile()
 	{
-
 		return new File( "ryred_co" ).exists();
-
 	}
 
 	protected static TextComponent formatUser( String name, User user )
@@ -104,6 +102,11 @@ public class Credits
 
 	protected static class BukkitListener implements Listener
 	{
+
+		public BukkitListener()
+		{
+			System.out.println( "3" );
+		}
 
 		@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 		public void onJoin( PlayerJoinEvent e )
