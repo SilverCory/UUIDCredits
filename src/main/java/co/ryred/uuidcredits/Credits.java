@@ -4,12 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -80,7 +74,6 @@ public class Credits
 
 	protected static class UserGetter implements Runnable
 	{
-
 		@Override
 		public void run()
 		{
@@ -88,50 +81,13 @@ public class Credits
 				URL url = new URL( "http://uuid.ryred.co/?min" );
 				Type listType = new TypeToken<HashMap<String, User>>() {}.getType();
 				userMap = gson.fromJson( new Scanner( url.openStream(), "UTF-8" ).useDelimiter( "\\A" ).next(), listType );
-
 				System.out.println( "Size: " + userMap.size() );
-
 				broken = false;
 			} catch ( java.io.IOException e ) {
 				broken = true;
 				e.printStackTrace();
 			}
-
 		}
 	}
 
-	protected static class BukkitListener implements Listener
-	{
-
-		public BukkitListener()
-		{
-			System.out.println( "3" );
-		}
-
-		@EventHandler(priority = EventPriority.HIGHEST)
-		public void onJoin( PlayerJoinEvent e )
-		{
-
-			System.out.println( "5." );
-			if ( broken ) return;
-
-			System.out.println( "6." );
-			String uuidString = e.getPlayer().getUniqueId().toString().replace( "-", "" );
-			if ( userMap.containsKey( uuidString ) ) {
-				e.setJoinMessage( null );
-
-				System.out.println( "7." );
-				try {
-					Class.forName( "net.md_5.bungee.api.chat.TextComponent" );
-					try {
-						Bukkit.spigot().broadcast( formatUser( e.getPlayer().getName(), userMap.get( uuidString ) ) );
-					} catch ( Exception ex ) {ex.printStackTrace();}
-				} catch ( ClassNotFoundException ex ) {
-					ex.printStackTrace();
-					e.setJoinMessage( ChatColor.translateAlternateColorCodes( '&', "&4&l?? &eWelcome &o" + e.getPlayer().getName() + " &r&e the server! &4&l??" ) );
-				}
-			}
-		}
-
-	}
 }
