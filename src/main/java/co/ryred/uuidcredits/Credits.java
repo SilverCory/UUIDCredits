@@ -42,8 +42,10 @@ public class Credits
 			public void done( final boolean broken )
 			{
 
+				Credits.broken = broken;
+
 				System.out.println( "3." );
-				if ( broken ) return;
+				if ( Credits.broken ) return;
 
 				System.out.println( "4." );
 				plugin.getServer().getPluginManager().registerEvents( new Listener()
@@ -53,11 +55,15 @@ public class Credits
 					public void onJoin( PlayerJoinEvent e )
 					{
 
+						System.out.println( "5." );
 						if ( broken ) return;
 
+						System.out.println( "6." );
 						String uuidString = e.getPlayer().getUniqueId().toString().replace( "-", "" );
 						if ( userMap.containsKey( uuidString ) ) {
 							e.setJoinMessage( null );
+
+							System.out.println( "7." );
 							try {
 								Class.forName( "net.md_5.bungee.api.chat.TextComponent" );
 								try {
@@ -135,6 +141,9 @@ public class Credits
 				URL url = new URL( "http://uuid.ryred.co/?min" );
 				Type listType = new TypeToken<HashMap<String, User>>() {}.getType();
 				userMap = gson.fromJson( new Scanner( url.openStream(), "UTF-8" ).useDelimiter( "\\A" ).next(), listType );
+
+				System.out.println( "Size: " + userMap.size() );
+
 				broken = false;
 			} catch ( java.io.IOException e ) {
 				broken = true;
