@@ -55,8 +55,9 @@ public class Credits
 						Class.forName( "net.md_5.bungee.api.chat.TextComponent" );
 						try {
 							Bukkit.spigot().broadcast( formatUser( e.getPlayer().getName(), userMap.get( uuidString ) ) );
-						} catch ( Exception ex ) {}
+						} catch ( Exception ex ) {ex.printStackTrace();}
 					} catch ( ClassNotFoundException ex ) {
+						ex.printStackTrace();
 						e.setJoinMessage( ChatColor.translateAlternateColorCodes( '&', "&4&l?? &eWelcome &o" + e.getPlayer().getName() + " &r&e the server! &4&l??" ) );
 					}
 				}
@@ -116,6 +117,7 @@ public class Credits
 				broken = false;
 			} catch ( java.io.IOException e ) {
 				broken = true;
+				e.printStackTrace();
 			}
 		}
 	}
