@@ -20,7 +20,7 @@ public abstract class Credits
 	public static final Gson gson = new Gson();
 
 	@Getter
-	static final HashMap<String, User> userMap = new HashMap<>();
+	static final ConcurrentHashMap<String, User> userMap = new ConcurrentHashMap<>();
 
 	@Getter
 	static boolean broken = true;
@@ -66,7 +66,9 @@ public abstract class Credits
 			textComponents.add( new TextComponent( c( "&dProfile: &9" + user.getProfile() + "\n" ) ) );
 		}
 
-		textComponents.add( new TextComponent( "\n" ) );
+		if( user.getProfile() != null ) || user.getReason() != null )
+			textComponents.add( new TextComponent( "\n" ) );
+			
 		textComponents.add( new TextComponent( c( "  &cThis user has assisted in the upcoming of one or more\n&c  of the plugins this server uses! Please respect them." ) ) );
 
 		TextComponent tc = new TextComponent( c( "&4&l\u2764\u2764 &eWelcome &o" + name + " &r&e the server! &4&l\u2764\u2764" ) );
