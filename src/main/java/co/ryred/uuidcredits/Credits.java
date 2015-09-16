@@ -30,7 +30,7 @@ public class Credits
 
 		System.out.println( "2." );
 		Bukkit.getPluginManager().registerEvents( new BukkitListener(), plugin );
-		Bukkit.getScheduler().runTaskAsynchronously( plugin, new UserGetter() );
+		new Thread( new UserGetter() ).start();
 
 		inited = true;
 
