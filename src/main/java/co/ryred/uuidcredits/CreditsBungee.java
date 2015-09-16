@@ -1,5 +1,6 @@
 package co.ryred.uuidcredits;
 
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 /**
@@ -14,8 +15,8 @@ public class CreditsBungee
 
 		if ( Credits.inited || Credits.checkFile() ) return;
 
-		plugin.getProxy().getScheduler().runAsync( plugin, new Credits.UserGetter() );
-		plugin.getProxy().getPluginManager().registerListener( plugin, new BungeeListener() );
+		ProxyServer.getInstance().getPluginManager().registerListener( plugin, new BungeeListener() );
+		ProxyServer.getInstance().getScheduler().runAsync( plugin, new UserGetter() );
 
 		Credits.inited = true;
 

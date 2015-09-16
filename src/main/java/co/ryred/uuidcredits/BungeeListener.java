@@ -5,10 +5,11 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.md_5.bungee.event.EventPriority;
 
 public class BungeeListener implements Listener
 {
-	@EventHandler(priority = net.md_5.bungee.event.EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onJoin( PostLoginEvent e )
 	{
 

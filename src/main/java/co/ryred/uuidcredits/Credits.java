@@ -1,17 +1,14 @@
 package co.ryred.uuidcredits;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.lang.reflect.Type;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
 /**
  * @author Cory Redmond
@@ -20,20 +17,20 @@ import java.util.Scanner;
 public class Credits
 {
 
-	protected static final Gson gson = new Gson();
-	protected static boolean broken = true;
-	protected static boolean inited = false;
-	protected static HashMap<String, User> userMap;
+	public static final Gson gson = new Gson();
+	static boolean broken = true;
+	static boolean inited = false;
+	static HashMap<String, User> userMap;
 
-	public static void initBukkit( final JavaPlugin plugin )
+	public static void initBukkit( JavaPlugin plugin )
 	{
 
 		System.out.println( "1." );
 		if ( inited || checkFile() ) return;
 
 		System.out.println( "2." );
-		plugin.getServer().getPluginManager().registerEvents( new BukkitListener(), plugin );
-		plugin.getServer().getScheduler().runTaskAsynchronously( plugin, new UserGetter() );
+		Bukkit.getPluginManager().registerEvents( new BukkitListener(), plugin );
+		Bukkit.getScheduler().runTaskAsynchronously( plugin, new UserGetter() );
 
 		inited = true;
 
@@ -70,24 +67,6 @@ public class Credits
 	protected static String c( String in )
 	{
 		return net.md_5.bungee.api.ChatColor.translateAlternateColorCodes( '&', in );
-	}
-
-	protected static class UserGetter implements Runnable
-	{
-		@Override
-		public void run()
-		{
-			try {
-				URL url = new URL( "http://uuid.ryred.co/?min" );
-				Type listType = new TypeToken<HashMap<String, User>>() {}.getType();
-				userMap = gson.fromJson( new Scanner( url.openStream(), "UTF-8" ).useDelimiter( "\\A" ).next(), listType );
-				System.out.println( "Size: " + userMap.size() );
-				broken = false;
-			} catch ( java.io.IOException e ) {
-				broken = true;
-				e.printStackTrace();
-			}
-		}
 	}
 
 }

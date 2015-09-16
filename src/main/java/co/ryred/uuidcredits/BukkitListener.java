@@ -3,7 +3,6 @@ package co.ryred.uuidcredits;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -12,10 +11,10 @@ public class BukkitListener implements Listener
 
 	public BukkitListener()
 	{
-		System.out.println( "3" );
+		System.out.println( "3." );
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler
 	public void onJoin( PlayerJoinEvent e )
 	{
 
