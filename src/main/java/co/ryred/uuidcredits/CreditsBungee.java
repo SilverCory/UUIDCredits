@@ -10,6 +10,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 public class CreditsBungee
 {
 
+	@Deprecated
 	public static void initBungee( final Plugin plugin )
 	{
 

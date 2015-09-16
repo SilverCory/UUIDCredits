@@ -22,6 +22,8 @@ public class Credits
 	static boolean inited = false;
 	static HashMap<String, User> userMap;
 
+
+	@Deprecated
 	public static void initBukkit( Plugin plugin )
 	{
 
