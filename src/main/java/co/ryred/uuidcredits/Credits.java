@@ -32,12 +32,8 @@ public abstract class Credits
 	public static void initBukkit( Credits responder )
 	{
 
-		System.out.println( "== init start" );
 		if ( inited || checkFile() ) return;
-
 		inited = true;
-		System.out.println( "== Set inited." );
-
 		responder.startBukkit( new BukkitListener(), new UserGetter() );
 
 	}
@@ -46,12 +42,8 @@ public abstract class Credits
 	public static void initBungee( Credits responder )
 	{
 
-		System.out.println( "== init start" );
 		if ( inited || checkFile() ) return;
-
 		inited = true;
-		System.out.println( "== Set inited." );
-
 		responder.startBungee( new BungeeListener(), new UserGetter() );
 
 	}

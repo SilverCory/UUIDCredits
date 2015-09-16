@@ -13,10 +13,8 @@ public class BukkitListener implements Listener
 	public void onJoin( PlayerJoinEvent e )
 	{
 
-		System.out.println( "== Player joined. " );
 		if ( Credits.broken ) return;
 
-		System.out.println( "== Not broken. " );
 		String uuidString = e.getPlayer().getUniqueId().toString().replace( "-", "" );
 		if ( Credits.userMap.containsKey( uuidString ) ) {
 			e.setJoinMessage( null );
@@ -25,12 +23,12 @@ public class BukkitListener implements Listener
 				Class.forName( "net.md_5.bungee.api.chat.TextComponent" );
 				try {
 					Bukkit.spigot().broadcast( Credits.formatUser( e.getPlayer().getName(), Credits.userMap.get( uuidString ) ) );
-				} catch ( Exception ex ) {ex.printStackTrace();}
+				} catch ( Exception ex ) {}
 			} catch ( ClassNotFoundException ex ) {
-				ex.printStackTrace();
 				e.setJoinMessage( ChatColor.translateAlternateColorCodes( '&', "&4&\u2764\u2764 &eWelcome &o" + e.getPlayer().getName() + " &r&e the server! &4&l\u2764\u2764" ) );
 			}
 		}
+
 	}
 
 }
