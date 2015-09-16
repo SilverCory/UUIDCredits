@@ -30,7 +30,7 @@ public class Credits
 	protected static boolean inited = false;
 	protected static HashMap<String, User> userMap;
 
-	public static void init( JavaPlugin plugin )
+	public static void initBukkit( JavaPlugin plugin )
 	{
 
 		if ( inited || checkFile() ) return;
