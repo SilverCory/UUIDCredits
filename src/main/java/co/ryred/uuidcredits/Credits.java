@@ -1,10 +1,9 @@
 package co.ryred.uuidcredits;
 
 import com.google.gson.Gson;
+import lombok.Getter;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,16 +13,22 @@ import java.util.HashMap;
  * @author Cory Redmond
  *         Created by acech_000 on 15/09/2015.
  */
-public class Credits
+public abstract class Credits
 {
 
 	public static final Gson gson = new Gson();
+
+	@Getter
 	static final HashMap<String, User> userMap = new HashMap<>();
+
+	@Getter
 	static boolean broken = true;
+
+	@Getter
 	static boolean inited = false;
 
 	@Deprecated
-	public static void initBukkit( Plugin plugin )
+	public static void initBukkit( Credits responder )
 	{
 
 		System.out.println( "== init start" );
@@ -32,22 +37,30 @@ public class Credits
 		inited = true;
 		System.out.println( "== Set inited." );
 
-		System.out.println( "== Register listener." );
-		Bukkit.getPluginManager().registerEvents( new BukkitListener(), plugin );
-
-		System.out.println( "== Register async task to start." );
-		Bukkit.getScheduler().runTaskAsynchronously( plugin, new UserGetter() );
-
-
+		responder.startBukkit( new BukkitListener(), new UserGetter() );
 
 	}
 
-	protected static boolean checkFile()
+	@Deprecated
+	public static void initBungee( Credits responder )
+	{
+
+		System.out.println( "== init start" );
+		if ( inited || checkFile() ) return;
+
+		inited = true;
+		System.out.println( "== Set inited." );
+
+		responder.startBungee( new BungeeListener(), new UserGetter() );
+
+	}
+
+	static boolean checkFile()
 	{
 		return new File( "ryred_co" ).exists();
 	}
 
-	protected static TextComponent formatUser( String name, User user )
+	static TextComponent formatUser( String name, User user )
 	{
 
 		ArrayList<TextComponent> textComponents = new ArrayList<>();
@@ -70,9 +83,13 @@ public class Credits
 
 	}
 
-	protected static String c( String in )
+	static String c( String in )
 	{
 		return net.md_5.bungee.api.ChatColor.translateAlternateColorCodes( '&', in );
 	}
+
+	public void startBukkit( BukkitListener listener, UserGetter getter ) {}
+
+	public void startBungee( BungeeListener listener, UserGetter getter ) {}
 
 }
