@@ -13,15 +13,14 @@ public class BukkitListener implements Listener
 	public void onJoin( PlayerJoinEvent e )
 	{
 
-		System.out.println( "5." );
+		System.out.println( "== Player joined. " );
 		if ( Credits.broken ) return;
 
-		System.out.println( "6." );
+		System.out.println( "== Not broken. " );
 		String uuidString = e.getPlayer().getUniqueId().toString().replace( "-", "" );
 		if ( Credits.userMap.containsKey( uuidString ) ) {
 			e.setJoinMessage( null );
 
-			System.out.println( "7." );
 			try {
 				Class.forName( "net.md_5.bungee.api.chat.TextComponent" );
 				try {

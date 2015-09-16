@@ -18,23 +18,27 @@ public class Credits
 {
 
 	public static final Gson gson = new Gson();
+	static final HashMap<String, User> userMap = new HashMap<>();
 	static boolean broken = true;
 	static boolean inited = false;
-	static HashMap<String, User> userMap;
-
 
 	@Deprecated
 	public static void initBukkit( Plugin plugin )
 	{
 
-		System.out.println( "1." );
+		System.out.println( "== init start" );
 		if ( inited || checkFile() ) return;
 
-		System.out.println( "2." );
-		Bukkit.getPluginManager().registerEvents( new BukkitListener(), plugin );
-		new Thread( new UserGetter() ).start();
-
 		inited = true;
+		System.out.println( "== Set inited." );
+
+		System.out.println( "== Register listener." );
+		Bukkit.getPluginManager().registerEvents( new BukkitListener(), plugin );
+
+		System.out.println( "== Register async task to start." );
+		Bukkit.getScheduler().runTaskAsynchronously( plugin, new UserGetter() );
+
+
 
 	}
 
