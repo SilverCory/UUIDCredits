@@ -8,7 +8,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.ConcurrentHashMap;
 
 /**
  * @author Cory Redmond
