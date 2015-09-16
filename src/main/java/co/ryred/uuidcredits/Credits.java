@@ -2,13 +2,14 @@ package co.ryred.uuidcredits;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.event.PostLoginEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -27,9 +28,9 @@ public class Credits
 	protected static final Gson gson = new Gson();
 	protected static boolean broken = true;
 	protected static boolean inited = false;
-	private static HashMap<String, User> userMap;
+	protected static HashMap<String, User> userMap;
 
-	public static void initBukkit( org.bukkit.plugin.Plugin plugin )
+	public static void init( JavaPlugin plugin )
 	{
 
 		if ( inited || checkFile() ) return;
@@ -38,11 +39,11 @@ public class Credits
 
 		if ( broken ) return;
 
-		plugin.getServer().getPluginManager().registerEvents( new org.bukkit.event.Listener()
+		plugin.getServer().getPluginManager().registerEvents( new Listener()
 		{
 
 			@org.bukkit.event.EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-			public void onJoin( org.bukkit.event.player.PlayerJoinEvent e )
+			public void onJoin( PlayerJoinEvent e )
 			{
 
 				if ( broken ) return;
@@ -68,45 +69,7 @@ public class Credits
 
 	}
 
-	public static void initBungee( net.md_5.bungee.api.plugin.Plugin plugin )
-	{
-
-		if ( inited || checkFile() ) return;
-
-		plugin.getProxy().getScheduler().runAsync( plugin, new UserGetter() );
-
-		if ( broken ) return;
-
-		plugin.getProxy().getPluginManager().registerListener( plugin, new net.md_5.bungee.api.plugin.Listener()
-		{
-
-			@net.md_5.bungee.event.EventHandler(priority = net.md_5.bungee.event.EventPriority.HIGHEST)
-			public void onJoin( PostLoginEvent e )
-			{
-
-				if ( broken ) return;
-
-				String uuidString = e.getPlayer().getUniqueId().toString().replace( "-", "" );
-				if ( userMap.containsKey( uuidString ) ) {
-					try {
-						Class.forName( "net.md_5.bungee.api.chat.TextComponent" );
-						try {
-							ProxyServer.getInstance().broadcast( formatUser( e.getPlayer().getName(), userMap.get( uuidString ) ) );
-						} catch ( Exception ex ) {}
-					} catch ( ClassNotFoundException ex ) {
-						ProxyServer.getInstance().broadcast( ChatColor.translateAlternateColorCodes( '&', "&4&l?? &eWelcome &o" + e.getPlayer().getName() + " &r&e the server! &4&l??" ) );
-					}
-				}
-
-			}
-
-		} );
-
-		inited = true;
-
-	}
-
-	private static boolean checkFile()
+	protected static boolean checkFile()
 	{
 
 		return new File( "ryred_co" ).exists();
