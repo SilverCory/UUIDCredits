@@ -38,8 +38,8 @@ public class Credits
 		if ( inited || checkFile() ) return;
 
 		System.out.println( "2." );
-		plugin.getServer().getScheduler().runTaskAsynchronously( plugin, new UserGetter() );
 		plugin.getServer().getPluginManager().registerEvents( new BukkitListener(), plugin );
+		plugin.getServer().getScheduler().runTaskAsynchronously( plugin, new UserGetter() );
 
 		inited = true;
 
@@ -108,7 +108,7 @@ public class Credits
 			System.out.println( "3" );
 		}
 
-		@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+		@EventHandler(priority = EventPriority.HIGHEST)
 		public void onJoin( PlayerJoinEvent e )
 		{
 
