@@ -47,17 +47,17 @@ public class Credits
 		ArrayList<TextComponent> textComponents = new ArrayList<>();
 
 		if ( user.getReason() != null ) {
-			textComponents.add( new TextComponent( c( "&dReason:  &9" + user.getReason() ) ) );
+			textComponents.add( new TextComponent( c( "&dReason:  &9" + user.getReason() + "\n" ) ) );
 		}
 
 		if ( user.getProfile() != null ) {
-			textComponents.add( new TextComponent( c( "&dProfile: &9" + user.getProfile() ) ) );
+			textComponents.add( new TextComponent( c( "&dProfile: &9" + user.getProfile() + "\n" ) ) );
 		}
 
-		textComponents.add( new TextComponent( "" ) );
-		textComponents.add( new TextComponent( c( "  &cThis user has assisted in the upcoming of one or more of the plugins this server uses! Please respect them." ) ) );
+		textComponents.add( new TextComponent( "\n" ) );
+		textComponents.add( new TextComponent( c( "  &cThis user has assisted in the upcoming of one or more\n&c  of the plugins this server uses! Please respect them." ) ) );
 
-		TextComponent tc = new TextComponent( c( "&4&l?? &eWelcome &o" + name + " &r&e the server! &4&l??" ) );
+		TextComponent tc = new TextComponent( c( "&4&l\u2764\u2764 &eWelcome &o" + name + " &r&e the server! &4&l\u2764\u2764" ) );
 		tc.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, textComponents.toArray( new TextComponent[ textComponents.size() ] ) ) );
 
 		return tc;

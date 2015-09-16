@@ -9,11 +9,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class BukkitListener implements Listener
 {
 
-	public BukkitListener()
-	{
-		System.out.println( "3." );
-	}
-
 	@EventHandler
 	public void onJoin( PlayerJoinEvent e )
 	{
@@ -34,7 +29,7 @@ public class BukkitListener implements Listener
 				} catch ( Exception ex ) {ex.printStackTrace();}
 			} catch ( ClassNotFoundException ex ) {
 				ex.printStackTrace();
-				e.setJoinMessage( ChatColor.translateAlternateColorCodes( '&', "&4&l?? &eWelcome &o" + e.getPlayer().getName() + " &r&e the server! &4&l??" ) );
+				e.setJoinMessage( ChatColor.translateAlternateColorCodes( '&', "&4&\u2764\u2764 &eWelcome &o" + e.getPlayer().getName() + " &r&e the server! &4&l\u2764\u2764" ) );
 			}
 		}
 	}

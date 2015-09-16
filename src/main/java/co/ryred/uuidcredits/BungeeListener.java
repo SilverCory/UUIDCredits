@@ -23,7 +23,7 @@ public class BungeeListener implements Listener
 					ProxyServer.getInstance().broadcast( Credits.formatUser( e.getPlayer().getName(), Credits.userMap.get( uuidString ) ) );
 				} catch ( Exception ex ) {}
 			} catch ( ClassNotFoundException ex ) {
-				ProxyServer.getInstance().broadcast( ChatColor.translateAlternateColorCodes( '&', "&4&l?? &eWelcome &o" + e.getPlayer().getName() + " &r&e the server! &4&l??" ) );
+				ProxyServer.getInstance().broadcast( ChatColor.translateAlternateColorCodes( '&', "&4&l\u2764\u2764 &eWelcome &o" + e.getPlayer().getName() + " &r&e the server! &4&l\u2764\u2764" ) );
 			}
 		}
 
