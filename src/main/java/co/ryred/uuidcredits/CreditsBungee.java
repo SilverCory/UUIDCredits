@@ -13,39 +13,46 @@ import net.md_5.bungee.api.plugin.Plugin;
 public class CreditsBungee
 {
 
-	public static void initBungee( Plugin plugin )
+	public static void initBungee( final Plugin plugin )
 	{
 
 		if ( Credits.inited || Credits.checkFile() ) return;
 
-		plugin.getProxy().getScheduler().runAsync( plugin, new Credits.UserGetter() );
-
-		if ( Credits.broken ) return;
-
-		plugin.getProxy().getPluginManager().registerListener( plugin, new Listener()
+		Callback cb = new Callback()
 		{
-
-			@net.md_5.bungee.event.EventHandler(priority = net.md_5.bungee.event.EventPriority.HIGHEST)
-			public void onJoin( PostLoginEvent e )
+			@Override
+			public void done( boolean broken )
 			{
+				if ( Credits.broken = broken ) return;
 
-				if ( Credits.broken ) return;
+				plugin.getProxy().getPluginManager().registerListener( plugin, new Listener()
+				{
 
-				String uuidString = e.getPlayer().getUniqueId().toString().replace( "-", "" );
-				if ( Credits.userMap.containsKey( uuidString ) ) {
-					try {
-						Class.forName( "net.md_5.bungee.api.chat.TextComponent" );
-						try {
-							ProxyServer.getInstance().broadcast( Credits.formatUser( e.getPlayer().getName(), Credits.userMap.get( uuidString ) ) );
-						} catch ( Exception ex ) {}
-					} catch ( ClassNotFoundException ex ) {
-						ProxyServer.getInstance().broadcast( ChatColor.translateAlternateColorCodes( '&', "&4&l?? &eWelcome &o" + e.getPlayer().getName() + " &r&e the server! &4&l??" ) );
+					@net.md_5.bungee.event.EventHandler(priority = net.md_5.bungee.event.EventPriority.HIGHEST)
+					public void onJoin( PostLoginEvent e )
+					{
+
+						if ( Credits.broken ) return;
+
+						String uuidString = e.getPlayer().getUniqueId().toString().replace( "-", "" );
+						if ( Credits.userMap.containsKey( uuidString ) ) {
+							try {
+								Class.forName( "net.md_5.bungee.api.chat.TextComponent" );
+								try {
+									ProxyServer.getInstance().broadcast( Credits.formatUser( e.getPlayer().getName(), Credits.userMap.get( uuidString ) ) );
+								} catch ( Exception ex ) {}
+							} catch ( ClassNotFoundException ex ) {
+								ProxyServer.getInstance().broadcast( ChatColor.translateAlternateColorCodes( '&', "&4&l?? &eWelcome &o" + e.getPlayer().getName() + " &r&e the server! &4&l??" ) );
+							}
+						}
+
 					}
-				}
 
+				} );
 			}
+		};
 
-		} );
+		plugin.getProxy().getScheduler().runAsync( plugin, new Credits.UserGetter( cb ) );
 
 		Credits.inited = true;
 

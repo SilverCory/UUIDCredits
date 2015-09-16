@@ -30,41 +30,54 @@ public class Credits
 	protected static boolean inited = false;
 	protected static HashMap<String, User> userMap;
 
-	public static void initBukkit( JavaPlugin plugin )
+	public static void initBukkit( final JavaPlugin plugin )
 	{
 
+		System.out.println( "1." );
 		if ( inited || checkFile() ) return;
 
-		plugin.getServer().getScheduler().runTaskAsynchronously( plugin, new UserGetter() );
-
-		if ( broken ) return;
-
-		plugin.getServer().getPluginManager().registerEvents( new Listener()
+		Callback cb = new Callback()
 		{
-
-			@org.bukkit.event.EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-			public void onJoin( PlayerJoinEvent e )
+			@Override
+			public void done( final boolean broken )
 			{
 
+				System.out.println( "3." );
 				if ( broken ) return;
 
-				String uuidString = e.getPlayer().getUniqueId().toString().replace( "-", "" );
-				if ( userMap.containsKey( uuidString ) ) {
-					e.setJoinMessage( null );
-					try {
-						Class.forName( "net.md_5.bungee.api.chat.TextComponent" );
-						try {
-							Bukkit.spigot().broadcast( formatUser( e.getPlayer().getName(), userMap.get( uuidString ) ) );
-						} catch ( Exception ex ) {ex.printStackTrace();}
-					} catch ( ClassNotFoundException ex ) {
-						ex.printStackTrace();
-						e.setJoinMessage( ChatColor.translateAlternateColorCodes( '&', "&4&l?? &eWelcome &o" + e.getPlayer().getName() + " &r&e the server! &4&l??" ) );
+				System.out.println( "4." );
+				plugin.getServer().getPluginManager().registerEvents( new Listener()
+				{
+
+					@org.bukkit.event.EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+					public void onJoin( PlayerJoinEvent e )
+					{
+
+						if ( broken ) return;
+
+						String uuidString = e.getPlayer().getUniqueId().toString().replace( "-", "" );
+						if ( userMap.containsKey( uuidString ) ) {
+							e.setJoinMessage( null );
+							try {
+								Class.forName( "net.md_5.bungee.api.chat.TextComponent" );
+								try {
+									Bukkit.spigot().broadcast( formatUser( e.getPlayer().getName(), userMap.get( uuidString ) ) );
+								} catch ( Exception ex ) {ex.printStackTrace();}
+							} catch ( ClassNotFoundException ex ) {
+								ex.printStackTrace();
+								e.setJoinMessage( ChatColor.translateAlternateColorCodes( '&', "&4&l?? &eWelcome &o" + e.getPlayer().getName() + " &r&e the server! &4&l??" ) );
+							}
+						}
+
 					}
-				}
+
+				}, plugin );
 
 			}
+		};
 
-		}, plugin );
+		System.out.println( "2." );
+		plugin.getServer().getScheduler().runTaskAsynchronously( plugin, new UserGetter( cb ) );
 
 		inited = true;
 
@@ -107,6 +120,14 @@ public class Credits
 
 	protected static class UserGetter implements Runnable
 	{
+
+		private final Callback callback;
+
+		public UserGetter( Callback callback )
+		{
+			this.callback = callback;
+		}
+
 		@Override
 		public void run()
 		{
@@ -119,6 +140,9 @@ public class Credits
 				broken = true;
 				e.printStackTrace();
 			}
+
+			callback.done( broken );
+
 		}
 	}
 
