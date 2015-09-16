@@ -2,6 +2,7 @@ package co.ryred.uuidcredits;
 
 import com.google.gson.Gson;
 import lombok.Getter;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -78,6 +79,10 @@ public abstract class Credits
 
 		TextComponent tc = new TextComponent( c( "&4&l\u2764\u2764 &eWelcome &o" + name + " &r&e the server! &4&l\u2764\u2764" ) );
 		tc.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, textComponents.toArray( new TextComponent[ textComponents.size() ] ) ) );
+
+		if ( user.getProfile() != null ) {
+			tc.setClickEvent( new ClickEvent( ClickEvent.Action.OPEN_URL, user.getProfile() ) );
+		}
 
 		return tc;
 
