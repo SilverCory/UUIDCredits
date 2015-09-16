@@ -29,7 +29,7 @@ public class Credits
 	protected static boolean inited = false;
 	private static HashMap<String, User> userMap;
 
-	public static void init( org.bukkit.plugin.Plugin plugin )
+	public static void initBukkit( org.bukkit.plugin.Plugin plugin )
 	{
 
 		if ( inited || checkFile() ) return;
@@ -68,7 +68,7 @@ public class Credits
 
 	}
 
-	public static void init( net.md_5.bungee.api.plugin.Plugin plugin )
+	public static void initBungee( net.md_5.bungee.api.plugin.Plugin plugin )
 	{
 
 		if ( inited || checkFile() ) return;
