@@ -66,7 +66,7 @@ public abstract class Credits
 			textComponents.add( new TextComponent( c( "&dProfile: &9" + user.getProfile() + "\n" ) ) );
 		}
 
-		if( user.getProfile() != null ) || user.getReason() != null )
+		if( user.getProfile() != null || user.getReason() != null )
 			textComponents.add( new TextComponent( "\n" ) );
 			
 		textComponents.add( new TextComponent( c( "  &cThis user has assisted in the upcoming of one or more\n&c  of the plugins this server uses! Please respect them." ) ) );
