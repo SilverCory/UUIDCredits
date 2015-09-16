@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class Credits
 	static boolean inited = false;
 	static HashMap<String, User> userMap;
 
-	public static void initBukkit( JavaPlugin plugin )
+	public static void initBukkit( Plugin plugin )
 	{
 
 		System.out.println( "1." );
