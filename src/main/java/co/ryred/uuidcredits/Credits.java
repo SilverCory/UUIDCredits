@@ -1,30 +1,53 @@
 package co.ryred.uuidcredits;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
 import java.io.File;
+import java.lang.reflect.Type;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Cory Redmond
  *         Created by acech_000 on 15/09/2015.
  */
+@SuppressWarnings("unchecked")
 public abstract class Credits
 {
 
 	public static final Gson gson = new Gson();
-
 	@Getter
 	static final ConcurrentHashMap<String, User> userMap = new ConcurrentHashMap<>();
-
 	@Getter
 	static boolean broken = true;
-
+	private static final Runnable userGetter = new Runnable()
+	{
+		@Override
+		public void run()
+		{
+			try {
+				Type listType = new TypeToken<HashMap<String, User>>() {}.getType();
+				Credits.getUserMap().putAll(
+						(Map<String, User>) Credits.gson.fromJson(
+								new Scanner( new URL( "http://uuid.ryred.co/?min" ).openStream(), "UTF-8" ).useDelimiter( "\\A" ).next(),
+								listType
+						)
+				);
+				Credits.broken = false;
+			} catch ( java.io.IOException e ) {
+				Credits.broken = true;
+			}
+		}
+	};
 	@Getter
 	static boolean inited = false;
 
@@ -34,7 +57,7 @@ public abstract class Credits
 
 		if ( inited || checkFile() ) return;
 		inited = true;
-		responder.startBukkit( new BukkitListener(), new UserGetter() );
+		responder.startBukkit( new BukkitListener(), userGetter );
 
 	}
 
@@ -44,7 +67,7 @@ public abstract class Credits
 
 		if ( inited || checkFile() ) return;
 		inited = true;
-		responder.startBungee( new BungeeListener(), new UserGetter() );
+		responder.startBungee( new BungeeListener(), userGetter );
 
 	}
 
@@ -89,8 +112,8 @@ public abstract class Credits
 		return net.md_5.bungee.api.ChatColor.translateAlternateColorCodes( '&', in );
 	}
 
-	public void startBukkit( BukkitListener listener, UserGetter getter ) {}
+	public void startBukkit( BukkitListener listener, Runnable getter ) {}
 
-	public void startBungee( BungeeListener listener, UserGetter getter ) {}
+	public void startBungee( BungeeListener listener, Runnable getter ) {}
 
 }

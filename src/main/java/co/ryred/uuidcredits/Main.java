@@ -26,7 +26,7 @@ public class Main
 			Type listType = new TypeToken<HashMap<String, User>>() {}.getType();
 			//noinspection unchecked
 			sMap.putAll(
-					(Map<? extends String, ? extends User>) Credits.gson.fromJson(
+					(Map<String, User>) Credits.gson.fromJson(
 							new Scanner( new URL( "http://uuid.ryred.co/?min" ).openStream(), "UTF-8" ).useDelimiter( "\\A" ).next(),
 							listType
 					)
@@ -42,6 +42,40 @@ public class Main
 		} catch ( IOException e ) {
 			e.printStackTrace();
 		}
+
+		Credits.initBukkit( new Credits()
+		{
+			@Override
+			public void startBukkit( final BukkitListener listener, final Runnable getter )
+			{
+				new Thread()
+				{
+
+					@Override
+					public void run()
+					{
+						getter.run();
+
+						try { Thread.sleep( 3000 ); } catch ( Exception e ) {}
+
+						new Thread()
+						{
+							@Override
+							public void run()
+							{
+								for ( Map.Entry<String, User> entry : Credits.getUserMap().entrySet() ) {
+									System.out.println( entry.getKey() );
+									System.out.println( "  Name   : " + entry.getValue().getName() );
+									System.out.println( "  Profile: " + entry.getValue().getProfile() );
+									System.out.println( "  Reason : " + entry.getValue().getReason() );
+								}
+							}
+						}.start();
+					}
+
+				}.start();
+			}
+		} );
 
 	}
 
