@@ -18,9 +18,9 @@ public class User
 	@Getter
 	private final String stringUUID;
 	@Getter
-	private String profile = null;
+	private final String profile;
 	@Getter
-	private String reason = null;
+	private final String reason;
 
 	public User( String name, UUID uuid, String profile, String reason )
 	{

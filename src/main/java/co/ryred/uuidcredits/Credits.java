@@ -56,6 +56,8 @@ public abstract class Credits
 	static TextComponent formatUser( String name, User user )
 	{
 
+		if ( user == null ) throw new IllegalArgumentException( "user can not be null" );
+
 		ArrayList<TextComponent> textComponents = new ArrayList<>();
 
 		if ( user.getReason() != null ) {
